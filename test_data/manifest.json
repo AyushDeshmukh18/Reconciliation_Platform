@@ -1,0 +1,233 @@
+{
+  "seed": 42,
+  "generated_at": "2026-05-29T23:05:41.912802+00:00",
+  "total_platform_records": 503,
+  "total_bank_records": 506,
+  "expected_matched": 471,
+  "injected_anomalies": [
+    {
+      "gap_type": "timing_gap",
+      "transaction_id": "2f278f05-edd1-497d-9617-c5cb89f8bd57",
+      "expected_classification": "timing_gap",
+      "expected_confidence_min": 70.0,
+      "injected_at": "2026-05-29T23:05:41.856582+00:00"
+    },
+    {
+      "gap_type": "rounding_difference",
+      "transaction_id": "4d4b6cb7-7e44-47e7-8161-508ba06284af",
+      "expected_classification": "rounding_difference",
+      "expected_confidence_min": 70.0,
+      "injected_at": "2026-05-29T23:05:41.856582+00:00"
+    },
+    {
+      "gap_type": "rounding_difference",
+      "transaction_id": "839eafeb-0d14-4b81-a73d-65cb771f58c8",
+      "expected_classification": "rounding_difference",
+      "expected_confidence_min": 70.0,
+      "injected_at": "2026-05-29T23:05:41.856582+00:00"
+    },
+    {
+      "gap_type": "rounding_difference",
+      "transaction_id": "651fe53f-cfb6-46c2-9655-32faba6f1143",
+      "expected_classification": "rounding_difference",
+      "expected_confidence_min": 70.0,
+      "injected_at": "2026-05-29T23:05:41.856582+00:00"
+    },
+    {
+      "gap_type": "rounding_difference",
+      "transaction_id": "9cdcce03-44cf-4daa-ae64-eb2e97e4469c",
+      "expected_classification": "rounding_difference",
+      "expected_confidence_min": 70.0,
+      "injected_at": "2026-05-29T23:05:41.856582+00:00"
+    },
+    {
+      "gap_type": "rounding_difference",
+      "transaction_id": "2f278f05-edd1-497d-9617-c5cb89f8bd57",
+      "expected_classification": "rounding_difference",
+      "expected_confidence_min": 70.0,
+      "injected_at": "2026-05-29T23:05:41.856582+00:00"
+    },
+    {
+      "gap_type": "rounding_difference",
+      "transaction_id": "49442ef3-d9a0-4f60-a907-b0d6892da5eb",
+      "expected_classification": "rounding_difference",
+      "expected_confidence_min": 70.0,
+      "injected_at": "2026-05-29T23:05:41.856582+00:00"
+    },
+    {
+      "gap_type": "rounding_difference",
+      "transaction_id": "48c140e7-2767-44fa-8d55-9ec27b8521b7",
+      "expected_classification": "rounding_difference",
+      "expected_confidence_min": 70.0,
+      "injected_at": "2026-05-29T23:05:41.856582+00:00"
+    },
+    {
+      "gap_type": "rounding_difference",
+      "transaction_id": "5f39fe76-a4c7-40ff-b5af-1fa7d756c8a7",
+      "expected_classification": "rounding_difference",
+      "expected_confidence_min": 70.0,
+      "injected_at": "2026-05-29T23:05:41.857311+00:00"
+    },
+    {
+      "gap_type": "rounding_difference",
+      "transaction_id": "0c33b309-6e24-46d8-8b16-2942d2eba44a",
+      "expected_classification": "rounding_difference",
+      "expected_confidence_min": 70.0,
+      "injected_at": "2026-05-29T23:05:41.857311+00:00"
+    },
+    {
+      "gap_type": "rounding_difference",
+      "transaction_id": "a2679e2f-2e61-4535-9539-f6d48689b752",
+      "expected_classification": "rounding_difference",
+      "expected_confidence_min": 70.0,
+      "injected_at": "2026-05-29T23:05:41.857311+00:00"
+    },
+    {
+      "gap_type": "duplicate_entry",
+      "transaction_id": "d12f8127-2acf-4af8-a19b-ee75f958c094",
+      "expected_classification": "duplicate_entry",
+      "expected_confidence_min": 70.0,
+      "injected_at": "2026-05-29T23:05:41.857311+00:00"
+    },
+    {
+      "gap_type": "orphan_refund",
+      "transaction_id": "4a41c610-1aa7-42f9-8de9-b938af3115ed",
+      "expected_classification": "orphan_refund",
+      "expected_confidence_min": 70.0,
+      "injected_at": "2026-05-29T23:05:41.857311+00:00"
+    },
+    {
+      "gap_type": "orphan_refund",
+      "transaction_id": "879e1efd-a9a8-42fc-bbfc-51edbb8ae111",
+      "expected_classification": "orphan_refund",
+      "expected_confidence_min": 70.0,
+      "injected_at": "2026-05-29T23:05:41.857311+00:00"
+    },
+    {
+      "gap_type": "partial_settlement",
+      "transaction_id": "a21a40dd-fcfc-48c2-b0fb-e3d01c707ec7",
+      "expected_classification": "partial_settlement",
+      "expected_confidence_min": 70.0,
+      "injected_at": "2026-05-29T23:05:41.857311+00:00"
+    },
+    {
+      "gap_type": "partial_settlement",
+      "transaction_id": "74cd7ac8-1469-4a0f-a544-05c2b77e20a7",
+      "expected_classification": "partial_settlement",
+      "expected_confidence_min": 70.0,
+      "injected_at": "2026-05-29T23:05:41.857311+00:00"
+    },
+    {
+      "gap_type": "partial_settlement",
+      "transaction_id": "a8033490-1bba-452d-affe-91fc684c8b74",
+      "expected_classification": "partial_settlement",
+      "expected_confidence_min": 70.0,
+      "injected_at": "2026-05-29T23:05:41.857311+00:00"
+    },
+    {
+      "gap_type": "partial_settlement",
+      "transaction_id": "36fc3c9b-2a3c-4dea-8ad0-cfff73eb57e3",
+      "expected_classification": "partial_settlement",
+      "expected_confidence_min": 70.0,
+      "injected_at": "2026-05-29T23:05:41.857311+00:00"
+    },
+    {
+      "gap_type": "failed_reversal",
+      "transaction_id": "d3b82347-26a8-4667-8b7b-670e5f1e3d41",
+      "expected_classification": "failed_reversal",
+      "expected_confidence_min": 70.0,
+      "injected_at": "2026-05-29T23:05:41.857311+00:00"
+    },
+    {
+      "gap_type": "split_settlement",
+      "transaction_id": "007598c7-5819-414f-b297-4abbd2e2e425",
+      "expected_classification": "split_settlement",
+      "expected_confidence_min": 70.0,
+      "injected_at": "2026-05-29T23:05:41.857311+00:00"
+    },
+    {
+      "gap_type": "split_settlement",
+      "transaction_id": "6aae66fe-5acf-4afa-8856-f81946eacd11",
+      "expected_classification": "split_settlement",
+      "expected_confidence_min": 70.0,
+      "injected_at": "2026-05-29T23:05:41.858340+00:00"
+    },
+    {
+      "gap_type": "split_settlement",
+      "transaction_id": "ab4ff252-b568-4dfc-9257-b497956c90fc",
+      "expected_classification": "split_settlement",
+      "expected_confidence_min": 70.0,
+      "injected_at": "2026-05-29T23:05:41.858873+00:00"
+    },
+    {
+      "gap_type": "stale_retry",
+      "transaction_id": "e5b12b3a-f9c2-4c2a-a32e-80581fa46055",
+      "expected_classification": "stale_retry",
+      "expected_confidence_min": 70.0,
+      "injected_at": "2026-05-29T23:05:41.899775+00:00"
+    },
+    {
+      "gap_type": "stale_retry",
+      "transaction_id": "f319cf98-d735-49d7-8749-2fec82f736ea",
+      "expected_classification": "stale_retry",
+      "expected_confidence_min": 70.0,
+      "injected_at": "2026-05-29T23:05:41.900811+00:00"
+    },
+    {
+      "gap_type": "settlement_truncation",
+      "batch_id": "BATCH_202605_001",
+      "expected_classification": "settlement_truncation",
+      "expected_confidence_min": 70.0,
+      "injected_at": "2026-05-29T23:05:41.900811+00:00"
+    },
+    {
+      "gap_type": "settlement_truncation",
+      "batch_id": "BATCH_202605_013",
+      "expected_classification": "settlement_truncation",
+      "expected_confidence_min": 70.0,
+      "injected_at": "2026-05-29T23:05:41.901435+00:00"
+    },
+    {
+      "gap_type": "settlement_truncation",
+      "batch_id": "BATCH_202605_029",
+      "expected_classification": "settlement_truncation",
+      "expected_confidence_min": 70.0,
+      "injected_at": "2026-05-29T23:05:41.901435+00:00"
+    },
+    {
+      "gap_type": "settlement_truncation",
+      "batch_id": "BATCH_202605_013",
+      "expected_classification": "settlement_truncation",
+      "expected_confidence_min": 70.0,
+      "injected_at": "2026-05-29T23:05:41.903390+00:00"
+    },
+    {
+      "gap_type": "settlement_truncation",
+      "batch_id": "BATCH_202605_048",
+      "expected_classification": "settlement_truncation",
+      "expected_confidence_min": 70.0,
+      "injected_at": "2026-05-29T23:05:41.903390+00:00"
+    },
+    {
+      "gap_type": "status_mismatch",
+      "transaction_id": "98b75db0-19ac-48cd-b8aa-bd47da52df03",
+      "expected_classification": "status_mismatch",
+      "expected_confidence_min": 70.0,
+      "injected_at": "2026-05-29T23:05:41.903390+00:00"
+    },
+    {
+      "gap_type": "status_mismatch",
+      "transaction_id": "b118c380-a554-4866-a904-c270ff74b917",
+      "expected_classification": "status_mismatch",
+      "expected_confidence_min": 70.0,
+      "injected_at": "2026-05-29T23:05:41.903390+00:00"
+    },
+    {
+      "gap_type": "idempotency_failure",
+      "transaction_id": "67330471-2a8e-4635-ba7d-4673e1132aab",
+      "expected_classification": "idempotency_failure",
+      "expected_confidence_min": 70.0,
+      "injected_at": "2026-05-29T23:05:41.903390+00:00"
+    }
+  ]
+}

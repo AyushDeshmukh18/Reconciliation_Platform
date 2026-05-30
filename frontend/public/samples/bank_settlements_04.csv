@@ -1,0 +1,6 @@
+batch_id,fee_amount,idempotency_key,net_settled_amount_minor_units,processing_date,settled_amount,settlement_id,settlement_status,transaction_reference,value_date
+BATCH_202605_021,1.75,idk_6a8b9c0d1e77,17475,2026-05-12T06:40:00+00:00,176.5,7e6d5c4b-3a2f-1e0d-9c8b-7a6d5c4b3a2f,settled,6c5b4a3d-2e1f-0c9b-8a7d-6e5f4a3b2c1d,2026-05-12T06:40:00+00:00
+BATCH_202605_026,0.90,idk_7b9c0d1e2f88,89910,2026-05-17T14:25:00+00:00,899.0,8f7e6d5c-4b3a-2f1e-0d9c-8b7a6d5c4b3f,settled,7d6c5b4a-3e2f-1c0b-9a8d-7e6f5a4b3c2d,2026-05-17T14:25:00+00:00
+BATCH_202605_034,2.25,idk_8c0d1e2f3a99,22500,2026-05-13T13:55:00+00:00,225.0,9a8b7c6d-5e4f-3d2c-1b0a-9f8e7d6c5b4a,settled,8e7d6c5b-4a3f-2e1d-0c9b-8a7f6e5d4c3b,2026-05-13T13:55:00+00:00
+BATCH_202605_047,0.85,idk_9d1e2f3a4b00,84915,2026-05-19T11:10:00+00:00,849.15,0b1c2d3e-4f5a-6b7c-8d9e-0f1a2b3c4d5e,settled,9f8e7d6c-5b4a-3f2e-1d0c-9b8a7e6d5c4b,2026-05-19T11:10:00+00:00
+BATCH_202605_055,1.10,idk_0e2f3a4b5c11,110110,2026-05-16T12:45:00+00:00,1101.10,1c0b9a8d-7e6f-5a4b-3c2d-1e0f9a8b7c6d,settled,0e9d8c7b-6a5f-4c3b-2a1d-0e9f8a7b6c5d,2026-05-16T12:45:00+00:00

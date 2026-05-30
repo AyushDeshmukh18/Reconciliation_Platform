@@ -1,0 +1,57 @@
+:root {
+  /* Canvas & surfaces */
+  --color-canvas: #060810;
+  --color-surface: #0c1018;
+  --color-surface-elevated: #121820;
+  --color-surface-hover: #181f2a;
+
+  /* Borders */
+  --color-border: rgba(255, 255, 255, 0.08);
+  --color-border-subtle: rgba(255, 255, 255, 0.04);
+
+  /* Text */
+  --color-foreground: #f1f5f9;
+  --color-muted: #94a3b8;
+  --color-muted-subtle: #64748b;
+
+  /* Accent */
+  --color-accent: #3b82f6;
+  --color-accent-hover: #2563eb;
+  --color-accent-muted: rgba(59, 130, 246, 0.12);
+
+  /* Semantic */
+  --color-success: #22c55e;
+  --color-success-muted: rgba(34, 197, 94, 0.12);
+  --color-warning: #f59e0b;
+  --color-warning-muted: rgba(245, 158, 11, 0.12);
+  --color-danger: #ef4444;
+  --color-danger-muted: rgba(239, 68, 68, 0.12);
+
+  /* Gap type palette */
+  --gap-timing: #60a5fa;
+  --gap-rounding: #a78bfa;
+  --gap-duplicate: #f472b6;
+  --gap-orphan: #fb923c;
+  --gap-partial: #fbbf24;
+  --gap-failed: #f87171;
+  --gap-split: #34d399;
+  --gap-stale: #94a3b8;
+  --gap-truncation: #c084fc;
+  --gap-status: #e879f9;
+  --gap-idempotency: #fb7185;
+  --gap-unclassified: #64748b;
+
+  /* Spacing & radius */
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+
+  /* Layout */
+  --sidebar-width: 240px;
+  --topbar-height: 56px;
+
+  /* Transitions */
+  --transition-fast: 120ms ease;
+  --transition-base: 200ms ease;
+}

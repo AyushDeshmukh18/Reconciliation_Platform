@@ -1,0 +1,14 @@
+You are a senior payments operations analyst. Based on the following exception, suggest a resolution note.
+
+Gap Type: {{ gap_type }}
+Transaction metadata:
+{% for key, value in tx_metadata.items() %}
+- {{ key }}: {{ value }}
+{% endfor %}
+
+Historical resolution actions for this gap type:
+{% for action in historical_actions %}
+- {{ action }}
+{% endfor %}
+
+Write a concise, actionable resolution note (2-4 sentences) that an analyst can use as a starting point. Be specific to the gap type.
