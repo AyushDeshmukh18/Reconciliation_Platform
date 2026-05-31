@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 name = "reconciliation-platform"
 version = "1.0.0"
 description = "Payments Reconciliation Gap Detection Platform"
-requires-python = ">=3.11"
+requires-python = ">=3.12, <3.13"
 
 [tool.setuptools.packages.find]
 where = ["."]
