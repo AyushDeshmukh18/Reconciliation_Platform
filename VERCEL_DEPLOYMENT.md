@@ -61,7 +61,7 @@ reconciliation-platform/
    - **Root Directory**: Leave empty (repo root)
    - **Build Command**: (auto-detected as `cd frontend && npm run build`)
    - **Output Directory**: (auto-detected as `frontend/dist`)
-   - **Install Command**: (auto-detected as `cd frontend && npm install`)
+   - **Install Command**: (auto-detected as )
 5. **Environment Variables**:
    - **Required for Production Persistence**: Add Vercel Postgres (from Vercel Storage → Create Database → Postgres)
    - This will automatically set the `POSTGRES_URL` env var (and others) in your Vercel project
