@@ -37,3 +37,9 @@ dependencies = [
 [tool.setuptools.packages.find]
 where = ["."]
 include = ["backend*", "data_generator*"]
+
+[tool.uv]
+python-version = "3.12"
+
+[tool.uv.pip]
+only-binary = [":all:"]
