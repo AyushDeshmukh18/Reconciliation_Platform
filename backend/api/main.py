@@ -63,6 +63,12 @@ async def lifespan(app: FastAPI):
     from backend.db.base import engine, Base
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
+    
+    # Run seed script (idempotent)
+    logger.info("Checking seed data...")
+    from backend.db.seed import load_realistic_data
+    load_realistic_data()
+    logger.info("Seed data check complete!")
     yield
 
 
@@ -179,5 +185,13 @@ def create_app() -> FastAPI:
     @app.get("/health")
     async def health():
         return {"status": "ok"}
+
+    @app.get("/")
+    async def root():
+        return {
+            "status": "ok", 
+            "service": "reconciliation-platform", 
+            "version": "1.0.0"
+        }
 
     return app
