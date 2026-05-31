@@ -15,8 +15,7 @@ class Settings(BaseSettings):
         extra="ignore"
     )
 
-    # Database configuration - supports Vercel Postgres and SQLite
-    # Vercel provides POSTGRES_URL environment variable for managed Postgres
+    # Database configuration
     DATABASE_URL: str = f"sqlite+aiosqlite:///{_ROOT / 'app.db'}"
     DATABASE_SYNC_URL: str = f"sqlite:///{_ROOT / 'app.db'}"
     
@@ -43,16 +42,18 @@ class Settings(BaseSettings):
     RECON_SETTLEMENT_FILE_CUTOFF_HOUR: int = 8
     DEFAULT_CURRENCY: str = "INR"
     
-    # Vercel-specific: Check for Vercel's POSTGRES_URL env var
+    # Vercel-specific configuration
     def model_post_init(self, __context):
-        # If POSTGRES_URL is available (Vercel Postgres), use that instead of SQLite
-        if os.environ.get("POSTGRES_URL"):
-            # Convert postgres:// to postgresql+asyncpg:// for async SQLAlchemy
-            pg_url = os.environ["POSTGRES_URL"].replace("postgres://", "postgresql+asyncpg://", 1)
-            self.DATABASE_URL = pg_url
-            # Convert for sync SQLAlchemy
-            sync_pg_url = os.environ["POSTGRES_URL"].replace("postgres://", "postgresql://", 1)
-            self.DATABASE_SYNC_URL = sync_pg_url
+        # If running on Vercel (APP_ENV=production or VERCEL env var exists)
+        is_vercel = os.environ.get("APP_ENV") == "production" or os.environ.get("VERCEL")
+        
+        if is_vercel:
+            # Vercel Serverless Functions only allow writing to /tmp directory
+            # Update paths accordingly
+            self.DATABASE_URL = "sqlite+aiosqlite:///tmp/app.db"
+            self.DATABASE_SYNC_URL = "sqlite:////tmp/app.db"
+            self.REPORTS_DIR = "/tmp/reports"
+            self.UPLOADS_DIR = "/tmp/uploads"
         
         # If VERCEL_URL is available, add it to FRONTEND_URL
         if os.environ.get("VERCEL_URL"):
@@ -65,4 +66,6 @@ class Settings(BaseSettings):
 def get_settings() -> Settings:
     settings = Settings()
     print(f"[Config] Using DATABASE_URL: {settings.DATABASE_URL}")
+    print(f"[Config] Using REPORTS_DIR: {settings.REPORTS_DIR}")
+    print(f"[Config] Using UPLOADS_DIR: {settings.UPLOADS_DIR}")
     return settings

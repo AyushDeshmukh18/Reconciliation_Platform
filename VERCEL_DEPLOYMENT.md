@@ -8,7 +8,6 @@ This guide explains how to deploy the entire Payments Reconciliation Gap Detecti
 1. Vercel account (free tier works)
 2. GitHub/GitLab/Bitbucket repository with the project
 3. Basic knowledge of Vercel
-4. (Recommended) Vercel Postgres or other managed PostgreSQL database
 
 ---
 
@@ -20,6 +19,7 @@ reconciliation-platform/
 │   └── index.py           # FastAPI entry point (Mangum handler)
 ├── backend/                # Original backend code
 ├── frontend/               # Original frontend code
+├── runtime.txt             # Specifies Python version for Vercel
 ├── vercel.json             # Vercel configuration
 ├── requirements.txt        # Python dependencies
 ├── package.json            # Frontend dependencies (in frontend/)
@@ -30,22 +30,30 @@ reconciliation-platform/
 
 ## Step 2: Key Configuration (Already Applied)
 
-### 2.1 Vercel Configuration (`vercel.json`)
+### 2.1 Runtime Configuration (`runtime.txt`)
+- **Critical**: Vercel was using Python 3.14 which is incompatible with our dependencies
+- **Fixed**: Pinned to `python-3.12.10` (stable, compatible with FastAPI 0.111, Pydantic 2.7.x, SQLAlchemy 2.0.x, Pandas 2.2.x)
+
+### 2.2 Vercel Configuration (`vercel.json`)
 - Uses `python@3.12` runtime (deprecated `@vercel/python@4` removed)
 - Uses `rewrites` (deprecated `routes` removed)
 - SPA fallback for React Router
 - Correct build commands and output directories
 - API rewrite: `/api/*` → `/api/index.py`
 
-### 2.2 Backend Entry Point (`api/index.py`)
+### 2.3 Backend Entry Point (`api/index.py`)
 - Proper Mangum handler export
 - No try/except around Mangum (fails fast if dependencies missing)
 
-### 2.3 Backend Config (`backend/config.py`)
-- Supports Vercel Postgres via `POSTGRES_URL` env var
+### 2.4 Backend Config (`backend/config.py`)
+- Auto-detects Vercel environment (via `APP_ENV=production` or `VERCEL` env var)
+- **Important**: Vercel Serverless Functions only allow writing to `/tmp`! So all paths are updated:
+  - Database: `/tmp/app.db`
+  - Reports: `/tmp/reports`
+  - Uploads: `/tmp/uploads`
 - Auto-adds Vercel's deployment URL to CORS origins
 
-### 2.4 Frontend Environment
+### 2.5 Frontend Environment
 - Frontend uses relative API paths (works with Vercel's proxy)
 - Environment variables configured in Vercel dashboard
 
@@ -61,26 +69,31 @@ reconciliation-platform/
    - **Root Directory**: Leave empty (repo root)
    - **Build Command**: (auto-detected as `cd frontend && npm run build`)
    - **Output Directory**: (auto-detected as `frontend/dist`)
-   - **Install Command**: (auto-detected as )
-5. **Environment Variables**:
-   - **Required for Production Persistence**: Add Vercel Postgres (from Vercel Storage → Create Database → Postgres)
-   - This will automatically set the `POSTGRES_URL` env var (and others) in your Vercel project
-   - The backend will automatically use Postgres instead of SQLite when `POSTGRES_URL` is present
+   - **Install Command**: (auto-detected as)
+5. **Environment Variables (Required)**:
+   Add these **Production Environment Variables** in Vercel Dashboard → Project Settings → Environment Variables:
+   ```
+   DATABASE_URL=sqlite+aiosqlite:///tmp/app.db
+   DATABASE_SYNC_URL=sqlite:////tmp/app.db
+   APP_ENV=production
+   REPORTS_DIR=/tmp/reports
+   UPLOADS_DIR=/tmp/uploads
+   DEFAULT_CURRENCY=INR
+   ```
+   (Note: You can leave out the database ones since config.py will auto-set them, but adding them explicitly is okay)
 6. Click "Deploy"
 
 ---
 
 ## Step 4: Deployment Considerations
 
-### ⚠️ **Major Deployment Blockers to Address**
+### ⚠️ **Major Deployment Notes**
 
-#### 1. **SQLite Persistence (Critical Issue)**
-- **Problem**: Vercel's serverless functions are ephemeral—SQLite databases are not persisted between function invocations
-- **Solution**: Use **Vercel Postgres** (recommended) or another managed PostgreSQL database (Supabase, Neon, etc.)
-- **How to Fix**:
-  1. Go to your Vercel project → Storage
-  2. Create a new Postgres database
-  3. Vercel will automatically connect it to your project and set environment variables
+#### 1. **SQLite Persistence (Important)**
+- **Vercel Limitation**: Serverless functions are ephemeral—SQLite data in `/tmp` is NOT persisted between function invocations!
+- **What this means**: Every time a new serverless function spins up, it gets a fresh empty database
+- **For Real Production Use**: Replace with **Vercel Postgres** (recommended), Supabase, Neon, or another managed database
+- **For testing**: This SQLite setup works for trying out the app
 
 #### 2. **Ollama/AI Features**
 - **Problem**: Ollama is a local model server and will not work on Vercel
@@ -92,8 +105,8 @@ reconciliation-platform/
 - **Current Mitigation**: Backend uses local background tasks that work within these limits for small datasets
 
 #### 4. **File Upload Persistence**
-- **Problem**: Files uploaded to `/uploads` are not persisted on Vercel's ephemeral storage
-- **Solution**: Use Vercel Blob Storage or another cloud storage service (S3, GCS, etc.)
+- **Problem**: Files uploaded to `/tmp/uploads` are not persisted between invocations
+- **Solution**: Use Vercel Blob Storage or another cloud storage service (S3, GCS, etc.) for real production use
 
 ---
 
