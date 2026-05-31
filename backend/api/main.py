@@ -66,9 +66,13 @@ async def lifespan(app: FastAPI):
     
     # Run seed script (idempotent)
     logger.info("Checking seed data...")
-    from backend.db.seed import load_realistic_data
-    load_realistic_data()
-    logger.info("Seed data check complete!")
+    try:
+        from backend.db.seed import load_realistic_data
+        load_realistic_data()
+        logger.info("Seed data check complete!")
+    except Exception as e:
+        logger.error(f"Error seeding database: {e}", exc_info=True)
+        print(f"⚠️  Seed failed but app will continue: {e}")
     yield
 
 
@@ -82,8 +86,28 @@ def create_app() -> FastAPI:
         lifespan=lifespan,
     )
 
+    # Add request logging middleware FIRST
+    @app.middleware("http")
+    async def log_requests(request: Request, call_next):
+        logger.info(f"Incoming request: {request.method} {request.url.path}")
+        try:
+            response = await call_next(request)
+            logger.info(f"Response status: {response.status_code} for {request.method} {request.url.path}")
+            return response
+        except Exception as e:
+            logger.error(f"Error processing request {request.method} {request.url.path}: {e}", exc_info=True)
+            raise
+
     # Parse FRONTEND_URL (comma-separated for multiple origins)
     origins = [origin.strip() for origin in settings.FRONTEND_URL.split(",") if origin.strip()]
+    # Add default localhost origins for development
+    default_origins = ["http://localhost:3000", "http://localhost:5173", "http://localhost:5174"]
+    for origin in default_origins:
+        if origin not in origins:
+            origins.append(origin)
+    # Add wildcard vercel.app origin
+    if "https://*.vercel.app" not in origins:
+        origins.append("https://*.vercel.app")
     logger.info("Allowing CORS origins: %s", origins)
     app.add_middleware(
         CORSMiddleware,

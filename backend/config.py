@@ -32,7 +32,7 @@ class Settings(BaseSettings):
     APP_PORT: int = 8000
     LOG_LEVEL: str = "DEBUG"
     LOG_FILE: str | None = None
-    FRONTEND_URL: str = "http://localhost:5173,http://localhost:5174"
+    FRONTEND_URL: str = "http://localhost:5173,http://localhost:5174,http://localhost:3000,https://*.vercel.app"
     REPORTS_DIR: str = str(_ROOT / "reports")
     UPLOADS_DIR: str = str(_ROOT / "uploads")
     RECON_RUN_CUTOFF_HOUR: int = 8
