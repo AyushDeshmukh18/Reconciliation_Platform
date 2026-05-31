@@ -659,6 +659,7 @@ def load_realistic_data():
         print("="*60)
 
     except Exception as e:
+        logger.error(f"Error during seeding: {e}")
         db.rollback()
         print(f"Error during seeding: {e}")
         raise
