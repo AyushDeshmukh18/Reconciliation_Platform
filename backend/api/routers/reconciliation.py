@@ -198,6 +198,7 @@ async def list_runs(
             select(ReconciliationRun).order_by(ReconciliationRun.started_at_utc.desc()).offset(offset).limit(page_size)
         )
     ).all()
+    logger.info(f"list_runs: returning {len(runs)} runs")
     breakdowns = await _gap_breakdown_batch(db, [run.run_id for run in runs])
     return [_run_to_response(run, breakdowns.get(run.run_id, {})) for run in runs]
 

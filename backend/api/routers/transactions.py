@@ -1,3 +1,4 @@
+import logging
 import uuid
 
 from fastapi import APIRouter, Depends, HTTPException, Query
@@ -9,6 +10,7 @@ from backend.api.models.platform_transaction import PlatformTransaction
 from backend.api.schemas.platform_transaction import BankSettlementResponse, PlatformTransactionResponse
 from backend.db.base import get_db
 
+logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/transactions", tags=["transactions"])
 
 
@@ -35,6 +37,7 @@ async def list_platform(
         q = q.where(PlatformTransaction.amount_minor_units <= amount_max)
     offset = (page - 1) * page_size
     rows = (await db.scalars(q.order_by(PlatformTransaction.created_at_utc.desc()).offset(offset).limit(page_size))).all()
+    logger.info(f"list_platform: returning {len(rows)} rows")
     return [
         PlatformTransactionResponse(
             transaction_id=r.transaction_id,
@@ -84,6 +87,7 @@ async def list_bank(
         q = q.where(BankSettlement.settlement_status == status)
     offset = (page - 1) * page_size
     rows = (await db.scalars(q.order_by(BankSettlement.value_date_utc.desc()).offset(offset).limit(page_size))).all()
+    logger.info(f"list_bank: returning {len(rows)} rows")
     return [
         BankSettlementResponse(
             settlement_id=r.settlement_id,
