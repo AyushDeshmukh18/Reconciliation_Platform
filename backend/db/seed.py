@@ -67,6 +67,9 @@ def load_realistic_data():
     rng = random.Random(42)
 
     try:
+        logger.info("Seed process started")
+        print("Seed process started")
+
         # Check if ANY data exists (idempotent)
         has_data = False
         tables = [User, RuleConfig, PlatformTransaction, BankSettlement, ReconciliationRun, ReconciliationResult]
@@ -80,8 +83,8 @@ def load_realistic_data():
             print("Database already has data, skipping seed")
             return
 
-        logger.info("Seeding database started")
-        print("Seeding database started...")
+        logger.info("Creating seed data")
+        print("Creating seed data...")
 
         # Collect ALL objects first, commit once at end!
         all_objects = []
@@ -302,7 +305,7 @@ def load_realistic_data():
                 confidence = rng.uniform(75, 90)
                 requires_review = True
             else:
-                recon_status = ReconStatus.unmatched
+                recon_status = ReconStatus.flagged
                 match_type = MatchType.unmatched
                 gap_type = GapType.orphan_refund
                 requires_review = True
@@ -327,7 +330,7 @@ def load_realistic_data():
         # Step 7: Generate Resolution Notes (20 notes)
         # -------------------------------
         resolution_notes = []
-        flagged_results = [r for r in recon_results if r.recon_status in [ReconStatus.flagged, ReconStatus.unmatched]][:20]
+        flagged_results = [r for r in recon_results if r.recon_status in [ReconStatus.flagged, ReconStatus.partially_matched]][:20]
         for result in flagged_results:
             resolution_notes.append(
                 ResolutionNote(
@@ -363,6 +366,7 @@ def load_realistic_data():
         # -------------------------------
         # COMMIT ALL AT ONCE!
         # -------------------------------
+        logger.info("Committing seed data...")
         db.add_all(all_objects)
         db.commit()
         logger.info("Seeding completed successfully")
@@ -377,10 +381,10 @@ def load_realistic_data():
         print("="*60)
 
     except Exception as e:
-        logger.error(f"Error during seeding: {e}")
+        logger.error(f"Error during seeding: {e}", exc_info=True)
         db.rollback()
-        print(f"Error during seeding: {e}")
-        raise
+        print(f"ERROR during seeding: {e}")
+        print("Seed failed, but application will continue to start")
     finally:
         db.close()
 
