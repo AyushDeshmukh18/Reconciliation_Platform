@@ -56,6 +56,12 @@ def _error_payload(request: Request, error_code: str, message: str) -> dict:
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     settings = get_settings()
+    logger.info("🚀 Backend starting up with config:")
+    logger.info(f"  - APP_ENV: {settings.APP_ENV}")
+    logger.info(f"  - LOG_LEVEL: {settings.LOG_LEVEL}")
+    logger.info(f"  - DATABASE_URL: (masked)")
+    logger.info(f"  - FRONTEND_URL: {settings.FRONTEND_URL}")
+    
     Path(settings.REPORTS_DIR).mkdir(parents=True, exist_ok=True)
     Path(settings.UPLOADS_DIR).mkdir(parents=True, exist_ok=True)
 
