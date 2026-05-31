@@ -63,6 +63,9 @@ def generate_currency(rng):
 
 
 def load_realistic_data():
+    import logging
+    logger = logging.getLogger(__name__)
+    
     settings = get_settings()
     engine = create_engine(settings.DATABASE_SYNC_URL, echo=False)
 
@@ -75,10 +78,8 @@ def load_realistic_data():
     rng = random.Random(42)  # Fixed seed for reproducibility
 
     try:
-        # Check if already seeded
-        if db.scalar(select(AuditLog).where(AuditLog.event_type == "SEED_DATA_LOADED")):
-            print("Data already seeded. Skipping.")
-            return
+        logger.info("Seeding database started")
+        print("Seeding database started...")
 
         # -------------------------------
         # Step 1: Create Users (if not exists)
@@ -645,6 +646,7 @@ def load_realistic_data():
         db.add(audit_entry)
         db.commit()
 
+        logger.info("Seeding completed successfully")
         print("\n" + "="*60)
         print("SEED DATA LOAD COMPLETE!")
         print("="*60)
