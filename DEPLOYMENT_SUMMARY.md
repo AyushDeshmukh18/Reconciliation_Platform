@@ -1,34 +1,90 @@
-# Vercel Deployment: Files Created/Modified
+# Vercel Deployment: Files Created/Modified & Summary of Changes
 
-This is a summary of all the files we've created/modified to deploy both frontend and backend to Vercel in the same project.
-
----
-
-## Files Created
-1. **VERCEL_DEPLOYMENT.md** - Complete step-by-step deployment guide
-2. **vercel.json** - Vercel project configuration (routes, builds, functions)
-3. **api/index.py** - Vercel serverless function entry point for FastAPI backend
-4. **frontend/.env.production** - Frontend production environment variables
-5. **.vercelignore** - Excludes unnecessary files from Vercel deployment
-6. **DEPLOYMENT_SUMMARY.md** (this file) - Recap of all changes
+This document summarizes all changes made to deploy the full-stack reconciliation platform on Vercel.
 
 ---
 
-## Files Modified
-1. **requirements.txt** - Added `mangum==0.17.0` (required for Vercel Python ASGI support)
-2. **backend/config.py** - Updated to support Vercel Postgres, VERCEL_URL environment variable, etc.
+## Changes Made (Commit: 9bfa7d9 + subsequent updates)
+
+### 1. Files Created
+| File Path | Purpose |
+|-----------|---------|
+| `VERCEL_DEPLOYMENT.md` | Complete step-by-step deployment guide |
+| `vercel.json` | Vercel project configuration |
+| `api/index.py` | Vercel serverless function entry point for FastAPI |
+| `frontend/.env.production` | Frontend production environment variables |
+| `.vercelignore` | Excludes unnecessary files from Vercel deployment |
+| `DEPLOYMENT_SUMMARY.md` | This summary document |
 
 ---
 
-## Next Steps
-1. If you don't have one already, push your project to a GitHub/GitLab/Bitbucket repository
-2. Go to [vercel.com](https://vercel.com), create a new project, and import your repository
-3. Configure the project as described in VERCEL_DEPLOYMENT.md
-4. (Optional) Set up Vercel Postgres for persistent data storage (SQLite won't work persistently on Vercel serverless functions)
-5. Deploy!
+### 2. Files Modified
+
+#### `vercel.json` (Major Rewrite)
+**Changes:**
+- ✅ **Replaced deprecated `routes` with `rewrites`**: Vercel v2 uses `rewrites` instead of `routes`
+- ✅ **Updated Python runtime**: Changed from deprecated `@vercel/python@4` to `python@3.12` (Vercel's current stable Python runtime)
+- ✅ **Added SPA fallback rewrite**: Added `/ (.*)` → `/index.html` to fix React Router page reloads (prevents 404s on direct navigation to routes like /dashboard, /exceptions)
+- ✅ **Simplified configuration**: Removed legacy/unnecessary keys
+
+**Why these changes?**
+- `routes` were deprecated in Vercel v2; `rewrites` are the current standard
+- `@vercel/python@4` is no longer supported; `python@3.12` is recommended
+- React Router requires all non-existent paths to route to index.html for client-side routing to work
 
 ---
 
-## Notes
-- **SQLite Limitation**: Vercel's serverless functions are ephemeral, so SQLite databases won't persist between invocations. Use Vercel Postgres or another managed database for production.
-- **Ollama/AI Features**: Ollama won't work on Vercel (since it requires running a local model server). For AI features in production, use a hosted AI service like OpenAI, Anthropic, etc.
+#### `api/index.py` (Fixed Handler Export)
+**Changes:**
+- ✅ **Removed try/except around Mangum**: Fails fast if `mangum` is missing (prevents silent failures)
+- ✅ **Simplified code**: Removed unnecessary local testing fallback (Vercel only cares about the `handler` export)
+
+**Why these changes?**
+- Vercel requires a clear, explicit `handler` export for Python serverless functions
+- The try/except could hide missing dependencies during deployment
+
+---
+
+#### `requirements.txt` (Added Dependency)
+**Changes:**
+- ✅ **Added `mangum==0.17.0`**: Vercel requires Mangum to run ASGI apps like FastAPI
+
+---
+
+#### `backend/config.py` (Vercel Integration)
+**Changes:**
+- ✅ **Vercel Postgres support**: Auto-detects `POSTGRES_URL` env var and uses it instead of SQLite
+- ✅ **Auto CORS for Vercel URL**: Automatically adds the Vercel deployment URL to allowed CORS origins when `VERCEL_URL` env var is present
+- ✅ **Added import os**: Required to read environment variables
+
+---
+
+---
+
+## Deployment Architecture
+
+### **Optimal Architecture: Monorepo Full-Stack on Vercel**
+- **Frontend**: Static site deployed from `frontend/dist`
+- **Backend**: Vercel Serverless Functions from `api/index.py` (handles all `/api/*` requests)
+- **Database**: (Required for production) Vercel Postgres or another managed PostgreSQL service
+- **Static Assets**: Served from `frontend/dist` (Vite's build output)
+
+---
+
+## Critical Deployment Blockers to Address Before Production Use
+
+| Blocker | Severity | Description | Solution |
+|---------|----------|-------------|----------|
+| **SQLite Persistence** | **CRITICAL** | Vercel's serverless functions are ephemeral—SQLite data is lost between requests | Use Vercel Postgres or other managed PostgreSQL |
+| **Ollama/AI Features** | **MEDIUM** | Ollama is a local service and won't work on Vercel | Use hosted AI API (OpenAI, Anthropic, etc.) |
+| **File Upload Persistence** | **MEDIUM** | Uploaded files won't be stored persistently | Use Vercel Blob or S3/GCS |
+| **Long-Running Tasks** | **LOW** | Vercel has function execution time limits (60s free, 5min Pro) | Works for small datasets; use Vercel Functions or background jobs for larger data |
+
+---
+
+## Final Production Checklist
+1. ✅ Set up Vercel Postgres
+2. ✅ Configure all necessary environment variables in Vercel dashboard
+3. ✅ Test end-to-end flow (upload, reconcile, view exceptions)
+4. ✅ Verify all frontend routes work correctly (including direct navigation/reloads)
+5. ✅ Check API endpoints via Swagger UI (`/api/docs`)

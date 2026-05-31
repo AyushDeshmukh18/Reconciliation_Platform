@@ -12,14 +12,9 @@ from backend.api.main import create_app
 # Create the FastAPI app
 app = create_app()
 
-# For Vercel, we need to expose the ASGI app
-# Vercel uses Mangum under the hood for Python ASGI apps
-try:
-    from mangum import Mangum
-    handler = Mangum(app)
-except ImportError:
-    print("Warning: mangum not installed. This is only for local testing.", file=sys.stderr)
-    handler = None
+# For Vercel, we need to expose the ASGI app using Mangum
+from mangum import Mangum
+handler = Mangum(app)
 
 if __name__ == "__main__":
     # For local testing only
