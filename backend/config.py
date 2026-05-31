@@ -1,5 +1,6 @@
 from functools import lru_cache
 from pathlib import Path
+import os
 
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
@@ -14,8 +15,11 @@ class Settings(BaseSettings):
         extra="ignore"
     )
 
+    # Database configuration - supports Vercel Postgres and SQLite
+    # Vercel provides POSTGRES_URL environment variable for managed Postgres
     DATABASE_URL: str = f"sqlite+aiosqlite:///{_ROOT / 'app.db'}"
     DATABASE_SYNC_URL: str = f"sqlite:///{_ROOT / 'app.db'}"
+    
     CELERY_BROKER_URL: str = "redis://localhost:6379/0"
     CELERY_RESULT_BACKEND: str = "redis://localhost:6379/0"
     OLLAMA_BASE_URL: str = "http://localhost:11434"
@@ -38,6 +42,23 @@ class Settings(BaseSettings):
     RECON_DUPLICATE_WINDOW_SECONDS: int = 60
     RECON_SETTLEMENT_FILE_CUTOFF_HOUR: int = 8
     DEFAULT_CURRENCY: str = "INR"
+    
+    # Vercel-specific: Check for Vercel's POSTGRES_URL env var
+    def model_post_init(self, __context):
+        # If POSTGRES_URL is available (Vercel Postgres), use that instead of SQLite
+        if os.environ.get("POSTGRES_URL"):
+            # Convert postgres:// to postgresql+asyncpg:// for async SQLAlchemy
+            pg_url = os.environ["POSTGRES_URL"].replace("postgres://", "postgresql+asyncpg://", 1)
+            self.DATABASE_URL = pg_url
+            # Convert for sync SQLAlchemy
+            sync_pg_url = os.environ["POSTGRES_URL"].replace("postgres://", "postgresql://", 1)
+            self.DATABASE_SYNC_URL = sync_pg_url
+        
+        # If VERCEL_URL is available, add it to FRONTEND_URL
+        if os.environ.get("VERCEL_URL"):
+            vercel_frontend = f"https://{os.environ['VERCEL_URL']}"
+            if vercel_frontend not in self.FRONTEND_URL:
+                self.FRONTEND_URL = f"{self.FRONTEND_URL},{vercel_frontend}"
 
 
 @lru_cache

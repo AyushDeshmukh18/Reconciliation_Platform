@@ -1,0 +1,56 @@
+# Virtual environment
+venv/
+__pycache__/
+*.pyc
+*.pyo
+
+# Local database files
+*.db
+*.sqlite
+*.sqlite3
+
+# Local logs
+*.log
+backend.log
+
+# Test files
+test_*.py
+tests/
+e2e/
+
+# Node modules
+node_modules/
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Git
+.git/
+.gitignore
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Build artifacts (except frontend/dist (we want that!)
+# frontend/dist is excluded by vercel's build process handles it
+
+# Data generator and test data (unless needed for deployment)
+data_generator/
+test_data/
+
+# Playwright and pytest
+playwright-report/
+playwright/.cache/
+.pytest_cache/
+
+# Alembic migrations (optional, but okay to include)
+# backend/db/migrations/
+
+# Temporary files
+tmp/
+temp/
